@@ -51,6 +51,10 @@
   #include "probe.h"
 #endif
 
+#if ENABLED(MSU)
+ #include "../feature/msu/msu.h"
+#endif
+
 Endstops endstops;
 
 // private:
@@ -818,6 +822,12 @@ void Endstops::update() {
       #endif
     }
   }
+
+  #if ENABLED(MSU) && DISABLED(SERVO_IDLER)
+    if(msu.idler_is_homing()) {
+      PROCESS_ENDSTOP(IDLER_ENDSTOP_AXIS, IDLER_ENDSTOP_MINMAX);
+    }
+  #endif
 
   if (stepper.axis_is_moving(Z_AXIS)) {
     if (stepper.motor_direction(Z_AXIS_HEAD)) { // Z -direction. Gantry down, bed up.
