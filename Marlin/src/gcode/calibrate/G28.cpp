@@ -63,6 +63,10 @@
   #include "../../feature/spindle_laser.h"
 #endif
 
+#if ENABLED(MSU)
+  #include "../../feature/msu/msu.h"
+#endif
+
 #define DEBUG_OUT ENABLED(DEBUG_LEVELING_FEATURE)
 #include "../../core/debug_out.h"
 
@@ -504,6 +508,10 @@ void GcodeSuite::G28() {
     }
 
   #endif // DUAL_X_CARRIAGE
+
+  #if ENABLED(MSU)
+    msu.idler_home();
+  #endif
 
   endstops.not_homing();
 

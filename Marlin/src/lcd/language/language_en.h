@@ -678,6 +678,13 @@ namespace Language_en {
   LSTR MSG_MMU2_RESETTING                 = _UxGT("MMU Resetting...");
   LSTR MSG_MMU2_EJECT_RECOVER             = _UxGT("Remove, click");
 
+  LSTR MSG_MSU_MENU                        = _UxGT("MSU");
+  LSTR MSG_MSU_IDLER_HOME                  = _UxGT("Home idler");
+  LSTR MSG_MSU_SELECT_FILAMENT             = _UxGT("Choose filament");
+  LSTR MSG_MSU_FILAMENT_N                  = _UxGT("Filament ~");
+  LSTR MSG_MSU_CALIBRATE_TUBE_LENGHT       = _UxGT("Calibrate tube length");
+  LSTR MSG_MSU_BOWDEN_TUBE_LENGHT          = _UxGT("bowden tube length");
+  
   LSTR MSG_MIX                            = _UxGT("Mix");
   LSTR MSG_MIX_COMPONENT_N                = _UxGT("Component =");
   LSTR MSG_MIXER                          = _UxGT("Mixer");

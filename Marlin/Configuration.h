@@ -222,6 +222,48 @@
  */
 //#define MMU_MODEL PRUSA_MMU2
 
+/**
+ * Material Switching Unit(MSU)
+ * Device based on the MMU2 from Prusa but that runs directly off the board (making it significantly cheaper)
+ * 
+ * If you are using a stepper controlled idler don't forget to set DISABLE_INACTIVE_E to false in Config_adv.h
+ * 
+ */
+//#define MSU
+#if ENABLED(MSU)
+  //#define BOWDEN_TUBE //enable when working with the MSU as a bowden extruder itself
+  //#define DIRECT_DRIVE //enable to work in a direct drive setup, if doing so don't forget to disable BOWDEN_TUBE
+  //#define DIRECT_DRIVE_LINKED_EXTRUDER //enable to work in a direct drive setup where both the MSU extruder and the actual extruder are connected to a parrallel module
+  //#define SERVO_IDLER //enable to control the idler using a servo
+  
+  #define MSU_MENU//LCD Menu
+
+  #define MSU_EXTRUDER_ENBR 0//define the MSU extruder motor nbr. ex: when using the E1 port and if defined correctly in the pins file of you board you would use 
+  //MSU_EXTRUDER_ENBR 1
+
+  #if ENABLED(SERVO_IDLER)
+      #define SERVO_IDLER_NBR 0//if your board has servo support select the servo nbr you want to use(if you are not sure you can check in the pins file of your board).
+      //If your board doesn't  support them directly you can also define a custom in your pins file once again
+      
+  #else
+    #define MSU_IDLER_ENBR 1 //define the idler extruder motor nbr.
+  #endif
+
+  #if ENABLED(DIRECT_DRIVE)
+    #define ORIGINAL_EXTRUDER_ENBR 2//define the extruder nbr that the actual extruder is connected to 
+  #endif
+
+  #if DISABLED(SERVO_IDLER)
+    #define IDLER_ENDSTOP_AXIS X //select the endstop connected
+    #define IDLER_ENDSTOP_MINMAX MAX
+    //#defin IDLER_ENDSTOP_PIN  //TODO              for a custom endstop pin. 
+  #endif
+
+  #define BOWDEN_TUBE_LENGTH 200//bowden tube length from the crossing point of the merger to the nozzle
+  #define NOZZLE_EXTRUDER_GEAR_LENGTH 40 //Only necessary for direct drive setups, the distance from the extruder gear up to the nozzle. 
+
+#endif
+
 // A dual extruder that uses a single stepper motor
 //#define SWITCHING_EXTRUDER
 #if ENABLED(SWITCHING_EXTRUDER)
@@ -1346,8 +1388,10 @@
 // @section extruder
 
 #define DISABLE_E false             // Disable the extruder when not stepping
-#define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
 
+#if DISABLED(SERVO_IDLER)
+  #define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
+#endif
 // @section machine
 
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
