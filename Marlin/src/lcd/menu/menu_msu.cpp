@@ -39,7 +39,7 @@ void menu_msu_change_filament() {
 
 void menu_msu_adjust_bowden_length(){
   ui.defer_status_screen();//prevent timeout due to no input during the move
-  msu.move_msu_extruder(msu.get_bowden_tube_length()+30);
+  msu.move_msu_extruder(msu.get_MSU_BOWDEN_TUBE_SETUP_length()+30);
   if (ui.use_click())
     ui.goto_screen(menu_msu);
   if (ui.encoderPosition)
@@ -47,7 +47,7 @@ void menu_msu_adjust_bowden_length(){
     if (!ui.manual_move.processing)
     {
       const float diff = float(int32_t(ui.encoderPosition)) * ui.manual_move.menu_scale;
-      msu.edit_bowden_tube_length(diff);
+      msu.edit_MSU_BOWDEN_TUBE_SETUP_length(diff);
       msu.move_msu_extruder(diff);
       ui.refresh(LCDVIEW_REDRAW_NOW);
     }
@@ -56,8 +56,8 @@ void menu_msu_adjust_bowden_length(){
   if (ui.should_draw())
   {
     MenuEditItemBase::draw_edit_screen(
-        GET_TEXT(MSG_MSU_BOWDEN_TUBE_LENGHT),
-        ftostr41sign(msu.get_bowden_tube_length()));
+        GET_TEXT(MSG_MSU_MSU_BOWDEN_TUBE_SETUP_LENGHT),
+        ftostr41sign(msu.get_MSU_BOWDEN_TUBE_SETUP_length()));
   }
 }
 

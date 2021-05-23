@@ -11,7 +11,7 @@
 #include "../../gcode/parser.h"
 #include "../../module/endstops.h"
 
-#if ENABLED(SERVO_IDLER)
+#if ENABLED(MSU_SERVO_IDLER)
   #include "../../module/servo.h"
 #endif
 
@@ -23,8 +23,8 @@ float servobearingangle=25;//space between each bearings
 float parkedPosition = 0; //this is the parked position. when using the servo it will be the parked position in degree
 float absolutePosition;  //used to represent the position in mm where the idler aligns with the correct filament
 float storeExtruderPosition; //used to store the extruder position before the tool change so that we are able to reset everything.
-float bowdenTubeLength = BOWDEN_TUBE_LENGTH;
-float nozzleExtruderGearLength = NOZZLE_EXTRUDER_GEAR_LENGTH;
+float bowdenTubeLength = MSU_BOWDEN_TUBE_SETUP_LENGTH;
+float nozzleExtruderGearLength = MSU_NOZZLE_EXTRUDER_GEAR_LENGTH;
 
 int SelectedFilamentNbr = 0;
 
@@ -46,11 +46,11 @@ void MSUMP::tool_change(uint8_t index)
 { changingFilament=true;
   SelectedFilamentNbr = index;
 
-  #ifdef DIRECT_DRIVE
+  #ifdef MSU_DIRECT_DRIVE_SETUP
     if(!idlerEngaged)
   {
-    #if ENABLED(SERVO_IDLER)
-      MOVE_SERVO(SERVO_IDLER_NBR,servopos1+SelectedFilamentNbr*servobearingangle);
+    #if ENABLED(MSU_SERVO_IDLER)
+      MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+SelectedFilamentNbr*servobearingangle);
     #else
       absolutePosition = offsetEndstopTo1 + SelectedFilamentNbr * spaceBetweenBearings;
       position.e=-(absolutePosition - idlerPosition);
@@ -61,7 +61,7 @@ void MSUMP::tool_change(uint8_t index)
   }
     
 
-  #endif//DIRECT_DRIVE
+  #endif//MSU_DIRECT_DRIVE_SETUP
   if(!idlerHomed)idler_home();
   
   position= current_position;//get the current position of the nozzle, this will be used so that we don't move the axis when performing any moves at the MSU level
@@ -71,10 +71,10 @@ void MSUMP::tool_change(uint8_t index)
   planner.position.resetExtruder(); //reset the extruder position to 0 to avoid problems with next move
   
   //clear the extruder gears
-  #ifdef DIRECT_DRIVE
+  #ifdef MSU_DIRECT_DRIVE_SETUP
     planner.position.resetExtruder();
     position.e= -nozzleExtruderGearLength-5;//go a bit further just to be sure, it doesn't change anything since the idler is not engaged
-    planner.buffer_line(position, 10, ORIGINAL_EXTRUDER_ENBR);
+    planner.buffer_line(position, 10, MSU_ORIGINAL_EXTRUDER_ENBR);
     planner.position.resetExtruder();
     //also move with the MSU(with the idler putting pressure on the right filament) if the extruder and the MSU are controlled independantly since they have different steps per mm
     position.e=-nozzleExtruderGearLength;
@@ -83,13 +83,13 @@ void MSUMP::tool_change(uint8_t index)
   #endif
 
   //disengage idler and clear the extruder with actual extruder
-  #ifdef DIRECT_DRIVE_LINKED_EXTRUDER
+  #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
     
   //disengage idler if it's engaged  
   if(idlerEngaged)
   {
-    #if ENABLED(SERVO_IDLER)
-      MOVE_SERVO(SERVO_IDLER_NBR,parkedPosition);
+    #if ENABLED(MSU_SERVO_IDLER)
+      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
     #else
       absolutePosition = parkedPosition;
       position.e=-(absolutePosition - idlerPosition);
@@ -105,7 +105,7 @@ void MSUMP::tool_change(uint8_t index)
   planner.position.resetExtruder();
   planner.synchronize();
 
-  #endif //DIRECT_DRIVE_LINKED_EXTRUDER
+  #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
 
   //unload filament until it clears the merger
@@ -117,8 +117,8 @@ void MSUMP::tool_change(uint8_t index)
   planner.position.resetExtruder();
 
   //idler select new filament
-  #if ENABLED(SERVO_IDLER)
-    MOVE_SERVO(SERVO_IDLER_NBR,servopos1+index*servobearingangle);
+  #if ENABLED(MSU_SERVO_IDLER)
+    MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
   #else
     absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
     position.e=-(absolutePosition - idlerPosition);
@@ -134,19 +134,19 @@ void MSUMP::tool_change(uint8_t index)
   planner.position.resetExtruder();
   planner.synchronize();
 
-  #ifdef DIRECT_DRIVE
+  #ifdef MSU_DIRECT_DRIVE_SETUP
     //put extra pressure to help the extruder gears grab the filament
     position.e=1;
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR)//two extruder moves at the same time: needs testing
 
     planner.position.resetExtruder();
     position.e= nozzleExtruderGearLength;
-    planner.buffer_line(position, 10, ORIGINAL_EXTRUDER_ENBR);
+    planner.buffer_line(position, 10, MSU_ORIGINAL_EXTRUDER_ENBR);
     planner.position.resetExtruder();
     planner.synchronize();
   #endif
 
-  #ifdef DIRECT_DRIVE_LINKED_EXTRUDER
+  #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
     //put extra pressure to help the extruder gears grab the filament, this is a synched move with both the MSU and the actual extruder
     position.e=3;
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);
@@ -157,13 +157,13 @@ void MSUMP::tool_change(uint8_t index)
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);//two extruder moves at the same time: needs testing
     planner.synchronize();
    
-  #endif //DIRECT_DRIVE_LINKED_EXTRUDER
+  #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
   
   //if direct drive park the idler, may change for direct drive setups to allow for filament "prefeed" with the MSU which would help reduce the strain on the extruder
-  #ifdef DIRECT_DRIVE || DIRECT_DRIVE_LINKED_EXTRUDER
+  #ifdef MSU_DIRECT_DRIVE_SETUP || MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
-    #if ENABLED(SERVO_IDLER)
-      MOVE_SERVO(SERVO_IDLER_NBR,parkedPosition);
+    #if ENABLED(MSU_SERVO_IDLER)
+      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
     #else
       absolutePosition = parkedPosition;
       position.e=-(absolutePosition - idlerPosition);
@@ -174,7 +174,7 @@ void MSUMP::tool_change(uint8_t index)
 
     idlerEngaged=false;
 
-  #endif//DIRECT_DRIVE
+  #endif//MSU_DIRECT_DRIVE_SETUP
 
   //reset all the positions to their original state
   planner.synchronize();//wait for all the moves to finish
@@ -188,7 +188,7 @@ void MSUMP::tool_change(uint8_t index)
 
 void MSUMP::idler_home()
 { 
-  #if ENABLED(SERVO_IDLER)
+  #if ENABLED(MSU_SERVO_IDLER)
     msu.idler_servo_init();
   #else
     homingIdler = true;
@@ -209,11 +209,11 @@ void MSUMP::idler_home()
   
 }
 
-#if ENABLED(SERVO_IDLER)
+#if ENABLED(MSU_SERVO_IDLER)
 //servo initiation sequence
 void MSUMP::idler_servo_init(){
   servo_init();
-  MOVE_SERVO(SERVO_IDLER_NBR,parkedPosition);
+  MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
 }
 #endif
 
@@ -223,7 +223,7 @@ bool MSUMP::idler_is_homing()
   return homingIdler;
 }
 
-void MSUMP::edit_bowden_tube_length(const float diff){
+void MSUMP::edit_MSU_BOWDEN_TUBE_SETUP_length(const float diff){
   bowdenTubeLength+=diff;
 }
 void MSUMP::move_msu_extruder(const float diff){
@@ -275,7 +275,7 @@ void MSUMP::error_on_unload(){
 //TODO handle direct drive, add "attempt counter" to call for the user when the printer is unable to fix the unload
 }
 
-const float MSUMP::get_bowden_tube_length(){
+const float MSUMP::get_MSU_BOWDEN_TUBE_SETUP_length(){
   return bowdenTubeLength;
 }
 bool MSUMP::active_filament_change(){
