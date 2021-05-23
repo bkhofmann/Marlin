@@ -823,9 +823,9 @@ void Endstops::update() {
     }
   }
 
-  #if ENABLED(MSU) && DISABLED(SERVO_IDLER)
+  #if ENABLED(MSU) && DISABLED(MSU_SERVO_IDLER)
     if(msu.idler_is_homing()) {
-      PROCESS_ENDSTOP(IDLER_ENDSTOP_AXIS, IDLER_ENDSTOP_MINMAX);
+      PROCESS_ENDSTOP(MSU_IDLER_ENDSTOP_AXIS, MSU_IDLER_ENDSTOP_MINMAX);
     }
   #endif
 
