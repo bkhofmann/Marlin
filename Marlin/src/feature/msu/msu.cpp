@@ -212,10 +212,17 @@ void MSUMP::idler_home()
 #if ENABLED(MSU_SERVO_IDLER)
 //servo initiation sequence
 void MSUMP::idler_servo_init(){
-  servo_init();
   MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
 }
+
+//servo calibration setting
+void MSUMP::servo_set_to_posistion_three(){
+  MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+2*servobearingangle);
+}
 #endif
+
+
+
 
 //used in the homing process. Used to fix the cold extrusion false trigger when performing idler moves
 bool MSUMP::idler_is_homing()
