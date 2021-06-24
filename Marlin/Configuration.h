@@ -238,8 +238,7 @@
   
   #define MSU_MENU//LCD Menu
 
-  #define MSU_EXTRUDER_ENBR 0//define the MSU extruder motor nbr. ex: when using the E1 port and if defined correctly in the pins file of you board you would use 
-  //MSU_EXTRUDER_ENBR 1
+  #define MSU_EXTRUDER_ENBR 0//define the MSU extruder motor nbr. ex: when using the E1 port and if defined correctly in the pins file of you board you would use MSU_EXTRUDER_ENBR 1
 
   #if ENABLED(MSU_SERVO_IDLER)
       #define MSU_SERVO_IDLER_NBR 0//if your board has servo support select the servo nbr you want to use(if you are not sure you can check in the pins file of your board).
