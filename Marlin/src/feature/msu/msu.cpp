@@ -160,7 +160,7 @@ void MSUMP::tool_change(uint8_t index)
   #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
   
   //if direct drive park the idler, may change for direct drive setups to allow for filament "prefeed" with the MSU which would help reduce the strain on the extruder
-  #ifdef MSU_DIRECT_DRIVE_SETUP || MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
+  #ifdef MSU_DIRECT_DRIVE_SETUP
 
     #if ENABLED(MSU_SERVO_IDLER)
       MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
@@ -175,6 +175,20 @@ void MSUMP::tool_change(uint8_t index)
     idlerEngaged=false;
 
   #endif//MSU_DIRECT_DRIVE_SETUP
+
+  #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
+    #if ENABLED(MSU_SERVO_IDLER)
+      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
+    #else
+      absolutePosition = parkedPosition;
+      position.e=-(absolutePosition - idlerPosition);
+      planner.buffer_line(position,  5, MSU_IDLER_ENBR);
+      planner.synchronize();
+      planner.position.resetExtruder();
+    #endif
+
+    idlerEngaged=false;
+  #endif//MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
   //reset all the positions to their original state
   planner.synchronize();//wait for all the moves to finish
