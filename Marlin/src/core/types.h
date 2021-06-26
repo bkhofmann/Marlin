@@ -534,7 +534,7 @@ struct XYZEval {
   };
   // Reset all to 0
   FI void reset()                     { LOGICAL_AXIS_GANG(e =, x =, y =, z =, i =, j =, k =) 0; }
-
+  FI void resetExtruder()                                     { e = 0; }
   // Setters taking struct types and arrays
   FI void set(const T px)             { x = px;               }
   FI void set(const T px, const T py) { x = px;    y = py;    }
