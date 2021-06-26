@@ -23,7 +23,6 @@
 #include "../../inc/MarlinConfig.h"
 
 #if BOTH(HAS_LCD_MENU, MSU_MENU)
-#include"../ultralcd.h" 
 #include "menu_msu.h"
 #include "../../feature/msu/msu.h"
 #include "../../module/planner.h"
