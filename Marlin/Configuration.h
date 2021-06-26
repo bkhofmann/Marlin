@@ -1328,7 +1328,7 @@
 
 #define DISABLE_E false             // Disable the extruder when not stepping
 
-#if DISABLED(MSU_SERVO_IDLER)
+#if DISABLED(MSU)
   #define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
 #endif
 // @section machine

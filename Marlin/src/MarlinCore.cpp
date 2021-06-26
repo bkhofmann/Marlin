@@ -462,7 +462,9 @@ inline void manage_inactivity(const bool no_stepper_sleep=false) {
         if (ENABLED(DISABLE_INACTIVE_I)) DISABLE_AXIS_I();
         if (ENABLED(DISABLE_INACTIVE_J)) DISABLE_AXIS_J();
         if (ENABLED(DISABLE_INACTIVE_K)) DISABLE_AXIS_K();
-        if (ENABLED(DISABLE_INACTIVE_E)) disable_e_steppers();
+        #if DISABLED(MSU)
+          if (ENABLED(DISABLE_INACTIVE_E)) disable_e_steppers();
+        #endif
 
         TERN_(AUTO_BED_LEVELING_UBL, ubl.steppers_were_disabled());
       }
