@@ -14,6 +14,7 @@ public:
     static bool idler_is_homing();
     static void edit_MSU_BOWDEN_TUBE_SETUP_length(const float diff);
     static void move_msu_extruder(const float diff);
+    static void idler_select_filament_nbr(int index);
     static void filament_runout();
     static void error_on_load();
     static void error_on_unload();
