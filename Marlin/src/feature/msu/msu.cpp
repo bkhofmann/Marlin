@@ -49,19 +49,10 @@ void MSUMP::tool_change(uint8_t index)
   #ifdef MSU_DIRECT_DRIVE_SETUP
     if(!idlerEngaged)
   {
-    #if ENABLED(MSU_SERVO_IDLER)
-      MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+SelectedFilamentNbr*servobearingangle);
-    #else
-      absolutePosition = offsetEndstopTo1 + SelectedFilamentNbr * spaceBetweenBearings;
-      position.e=-(absolutePosition - idlerPosition);
-      planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-      planner.synchronize();
-      planner.position.resetExtruder();
-    #endif
+    idler_select_filament_nbr(SelectedFilamentNbr);
   }
-    
-
   #endif//MSU_DIRECT_DRIVE_SETUP
+  
   if(!idlerHomed)idler_home();
   
   position= current_position;//get the current position of the nozzle, this will be used so that we don't move the axis when performing any moves at the MSU level
@@ -88,15 +79,7 @@ void MSUMP::tool_change(uint8_t index)
   //disengage idler if it's engaged  
   if(idlerEngaged)
   {
-    #if ENABLED(MSU_SERVO_IDLER)
-      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
-    #else
-      absolutePosition = parkedPosition;
-      position.e=-(absolutePosition - idlerPosition);
-      planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-      planner.synchronize();
-      planner.position.resetExtruder();
-    #endif
+    idler_select_filament_nbr(-1);
   }
   //clear the extruder gears
   planner.position.resetExtruder();
@@ -116,16 +99,8 @@ void MSUMP::tool_change(uint8_t index)
   planner.synchronize();
   planner.position.resetExtruder();
 
-  //idler select new filament
-  #if ENABLED(MSU_SERVO_IDLER)
-    MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
-  #else
-    absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
-    position.e=-(absolutePosition - idlerPosition);
-    planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-    planner.synchronize();
-    planner.position.resetExtruder();
-  #endif
+
+  idler_select_filament_nbr(index);
   
 
   //reload the new filament up to the nozzle/extruder gear if running a direct drive setup
@@ -161,33 +136,11 @@ void MSUMP::tool_change(uint8_t index)
   
   //if direct drive park the idler, may change for direct drive setups to allow for filament "prefeed" with the MSU which would help reduce the strain on the extruder
   #ifdef MSU_DIRECT_DRIVE_SETUP
-
-    #if ENABLED(MSU_SERVO_IDLER)
-      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
-    #else
-      absolutePosition = parkedPosition;
-      position.e=-(absolutePosition - idlerPosition);
-      planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-      planner.synchronize();
-      planner.position.resetExtruder();
-    #endif
-
-    idlerEngaged=false;
-
+    idler_select_filament_nbr(-1);
   #endif//MSU_DIRECT_DRIVE_SETUP
 
   #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
-    #if ENABLED(MSU_SERVO_IDLER)
-      MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
-    #else
-      absolutePosition = parkedPosition;
-      position.e=-(absolutePosition - idlerPosition);
-      planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-      planner.synchronize();
-      planner.position.resetExtruder();
-    #endif
-
-    idlerEngaged=false;
+    idler_select_filament_nbr(-1);
   #endif//MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
   //reset all the positions to their original state
@@ -196,6 +149,26 @@ void MSUMP::tool_change(uint8_t index)
   idlerPosition = absolutePosition;
   planner.position.e = storeExtruderPosition;
   changingFilament=false;
+}
+
+
+//moves the idler to the specified position, negative value means parking the idler
+void MSUMP::idler_select_filament_nbr(int index)
+{ //TODO add limits: index can't be higher than the number of filaments
+  #if ENABLED(MSU_SERVO_IDLER)
+    MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
+  #else
+    absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
+
+    //park idler
+    if(index<0)absolutePosition=0;
+
+    position.e=-(absolutePosition - idlerPosition);
+    planner.buffer_line(position,  5, MSU_IDLER_ENBR);
+    planner.synchronize();
+    planner.position.resetExtruder();
+    if(index<0)idlerEngaged=false;;
+  #endif
 }
 
 //homing sequence of the idler. If this is called when using the servo motor it will initiate it
