@@ -682,8 +682,10 @@ namespace Language_en {
   LSTR MSG_MSU_IDLER_HOME                  = _UxGT("Home idler");
   LSTR MSG_MSU_SELECT_FILAMENT             = _UxGT("Choose filament");
   LSTR MSG_MSU_FILAMENT_N                  = _UxGT("Filament ~");
+  LSTR MSG_MSU_IDLER_POSITION_N            = _UxGT("Idler position ~");
   LSTR MSG_MSU_CALIBRATE_TUBE_LENGHT       = _UxGT("Calibrate tube length");
-  LSTR MSG_MSU_BOWDEN_TUBE_LENGHT          = _UxGT("bowden tube length");
+  LSTR MSG_MSU_MSU_BOWDEN_LENGHT           = _UxGT("Bowden tube length");
+  LSTR MSG_MSU_SET_IDLER_POSITION          = _UxGT("Set idler position");
 
   LSTR MSG_MIX                            = _UxGT("Mix");
   LSTR MSG_MIX_COMPONENT_N                = _UxGT("Component =");
