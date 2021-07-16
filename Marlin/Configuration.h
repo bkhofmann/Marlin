@@ -253,6 +253,10 @@
     #define MSU_ORIGINAL_EXTRUDER_ENBR 2//define the extruder nbr that the actual extruder is connected to 
   #endif
 
+  #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
+    #define MSU_EXTRUDER_STEPS_PER_MM 120 //defines the steps per mm of the extruder on the MSU. Shouldn't require any tuning
+  #endif
+
   #if DISABLED(MSU_SERVO_IDLER)
     #define MSU_IDLER_ENDSTOP_AXIS X //select the endstop connected
     #define MSU_IDLER_ENDSTOP_MINMAX MAX
