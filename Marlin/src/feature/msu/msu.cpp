@@ -40,9 +40,10 @@ bool unloading=false;
 bool homingIdler=false;//homing status used in the homing sequence, but will also be useful in order to disable the bug where the idler won't move if the nozzle is cold(prevent cold extrusion feature)
 xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our MSU moves in order to be able to apply motion limits. We then apply the extruder movement we want to that
 
-double steps_per_mm_correction_factor = 1;
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
   double steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM / settings.axis_steps_per_mm[E_AXIS_N(MSU_EXTRUDER_ENBR)];
+#else
+  double steps_per_mm_correction_factor = 1;
 #endif
 
 
