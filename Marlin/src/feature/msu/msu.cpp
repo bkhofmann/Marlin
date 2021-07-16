@@ -40,6 +40,11 @@ bool unloading=false;
 bool homingIdler=false;//homing status used in the homing sequence, but will also be useful in order to disable the bug where the idler won't move if the nozzle is cold(prevent cold extrusion feature)
 xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our MSU moves in order to be able to apply motion limits. We then apply the extruder movement we want to that
 
+double steps_per_mm_correction_factor = 1;
+#if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
+  double steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM / settings.axis_steps_per_mm[E_AXIS_N(MSU_EXTRUDER_ENBR)];
+#endif
+
 
 
 void MSUMP::tool_change(uint8_t index)
@@ -64,7 +69,7 @@ void MSUMP::tool_change(uint8_t index)
   //clear the extruder gears
   #ifdef MSU_DIRECT_DRIVE_SETUP
     planner.position.resetExtruder();
-    position.e= -nozzleExtruderGearLength-5;//go a bit further just to be sure, it doesn't change anything since the idler is not engaged
+    position.e=  (-nozzleExtruderGearLength-5)*steps_per_mm_correction_factor;//go a bit further just to be sure, it doesn't change anything since the idler is not engaged
     planner.buffer_line(position, 10, MSU_ORIGINAL_EXTRUDER_ENBR);
     planner.position.resetExtruder();
     //also move with the MSU(with the idler putting pressure on the right filament) if the extruder and the MSU are controlled independantly since they have different steps per mm
@@ -83,7 +88,7 @@ void MSUMP::tool_change(uint8_t index)
   }
   //clear the extruder gears
   planner.position.resetExtruder();
-  position.e= -nozzleExtruderGearLength;
+  position.e= -nozzleExtruderGearLength*steps_per_mm_correction_factor;
   planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);
   planner.position.resetExtruder();
   planner.synchronize();
@@ -93,7 +98,7 @@ void MSUMP::tool_change(uint8_t index)
 
   //unload filament until it clears the merger
 
-  position.e= -bowdenTubeLength;
+  position.e= -bowdenTubeLength*steps_per_mm_correction_factor;
   planner.buffer_line(position,  30, MSU_EXTRUDER_ENBR);
   planner.position.resetExtruder();
   planner.synchronize();
@@ -104,18 +109,18 @@ void MSUMP::tool_change(uint8_t index)
   
 
   //reload the new filament up to the nozzle/extruder gear if running a direct drive setup
-  position.e=bowdenTubeLength;
+  position.e=bowdenTubeLength*steps_per_mm_correction_factor;
   planner.buffer_line(position, 25, MSU_EXTRUDER_ENBR);
   planner.position.resetExtruder();
   planner.synchronize();
 
   #ifdef MSU_DIRECT_DRIVE_SETUP
     //put extra pressure to help the extruder gears grab the filament
-    position.e=1;
+    position.e=1*steps_per_mm_correction_factor;
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR)//two extruder moves at the same time: needs testing
 
     planner.position.resetExtruder();
-    position.e= nozzleExtruderGearLength;
+    position.e= nozzleExtruderGearLength*steps_per_mm_correction_factor;
     planner.buffer_line(position, 10, MSU_ORIGINAL_EXTRUDER_ENBR);
     planner.position.resetExtruder();
     planner.synchronize();
@@ -123,12 +128,12 @@ void MSUMP::tool_change(uint8_t index)
 
   #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
     //put extra pressure to help the extruder gears grab the filament, this is a synched move with both the MSU and the actual extruder
-    position.e=3;
+    position.e=3*steps_per_mm_correction_factor;
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);
     planner.position.resetExtruder();
 
     //finish loading
-    position.e=nozzleExtruderGearLength;
+    position.e=nozzleExtruderGearLength*steps_per_mm_correction_factor;
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);//two extruder moves at the same time: needs testing
     planner.synchronize();
    
