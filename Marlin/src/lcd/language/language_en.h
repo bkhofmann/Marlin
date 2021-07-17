@@ -686,6 +686,7 @@ namespace Language_en {
   LSTR MSG_MSU_CALIBRATE_TUBE_LENGHT       = _UxGT("Calibrate tube length");
   LSTR MSG_MSU_MSU_BOWDEN_LENGHT           = _UxGT("Bowden tube length");
   LSTR MSG_MSU_SET_IDLER_POSITION          = _UxGT("Set idler position");
+  LSTR MSG_MSU_SET_SERVO_TO_POS_3          = _UxGT("Set idler position");
 
   LSTR MSG_MIX                            = _UxGT("Mix");
   LSTR MSG_MIX_COMPONENT_N                = _UxGT("Component =");

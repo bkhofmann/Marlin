@@ -98,9 +98,7 @@ void menu_msu() {
   SUBMENU(MSG_MSU_SELECT_FILAMENT, menu_msu_change_filament);
   SUBMENU(MSG_MSU_SET_IDLER_POSITION, menu_msu_set_idler_position);
   
-  #if ENABLED(MSU_SERVO_IDLER)
-  ACTION_ITEM(MSG_MSU_SET_SERVO_TO_POS_3,[]{ msu.servo_set_to_posistion_three(); })
-  #endif
+
   //SUBMENU(MSG_MSU_CALIBRATE_TUBE_LENGHT,menu_msu_move_extruder); // still to unstable to be included in the main release but will keep working on it in the LCDMenu branch
   END_MENU();
 }
