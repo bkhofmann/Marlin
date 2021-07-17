@@ -11,6 +11,7 @@
 #include "../../gcode/parser.h"
 #include "../../module/endstops.h"
 
+
 #if ENABLED(MSU_SERVO_IDLER)
   #include "../../module/servo.h"
 #endif
@@ -40,8 +41,9 @@ bool unloading=false;
 bool homingIdler=false;//homing status used in the homing sequence, but will also be useful in order to disable the bug where the idler won't move if the nozzle is cold(prevent cold extrusion feature)
 xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our MSU moves in order to be able to apply motion limits. We then apply the extruder movement we want to that
 
+
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
-  double steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM / settings.axis_steps_per_mm[E_AXIS_N(MSU_EXTRUDER_ENBR)];
+  double steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM / planner.settings.axis_steps_per_mm[E_AXIS_N(MSU_EXTRUDER_ENBR)];
 #else
   double steps_per_mm_correction_factor = 1;
 #endif
@@ -205,12 +207,7 @@ void MSUMP::idler_home()
 #if ENABLED(MSU_SERVO_IDLER)
 //servo initiation sequence
 void MSUMP::idler_servo_init(){
-  MOVE_SERVO(MSU_SERVO_IDLER_NBR,parkedPosition);
-}
-
-//servo calibration setting
-void MSUMP::servo_set_to_posistion_three(){
-  MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+2*servobearingangle);
+  idler_select_filament_nbr(0);
 }
 #endif
 
