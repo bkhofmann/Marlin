@@ -20,7 +20,7 @@ float idlerPosition; //stores the idler position in mm
 float offsetEndstopTo1 = 3.9;//space from the endstop to the first bearing position(Filament 1)
 float spaceBetweenBearings = 3;//space in between each bearing
 float servopos1=20;//first bearing position
-float servobearingangle=25;//space between each bearings
+float servobearingangle=27.5;//space between each bearings
 float parkedPosition = 0; //this is the parked position. when using the servo it will be the parked position in degree
 float absolutePosition;  //used to represent the position in mm where the idler aligns with the correct filament
 float storeExtruderPosition; //used to store the extruder position before the tool change so that we are able to reset everything.
