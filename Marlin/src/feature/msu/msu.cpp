@@ -27,7 +27,7 @@ float storeExtruderPosition; //used to store the extruder position before the to
 float bowdenTubeLength = MSU_BOWDEN_TUBE_SETUP_LENGTH;
 float nozzleExtruderGearLength = MSU_NOZZLE_EXTRUDER_GEAR_LENGTH;
 
-int SelectedFilamentNbr = 0;
+int SelectedFilamentNbr = -1; //default to home position until at least one tool change has been performed
 
 bool idlerEngaged = true;//idler engaged or not, this is used in direct drive setup with the MSU disengaging and letting the extruder do everything
 bool idlerHomed=false;
@@ -52,7 +52,7 @@ xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our
 
 void MSUMP::tool_change(uint8_t index)
 { changingFilament=true;
-  SelectedFilamentNbr = index;
+  
 
   #ifdef MSU_DIRECT_DRIVE_SETUP
     if(!idlerEngaged)
@@ -96,6 +96,8 @@ void MSUMP::tool_change(uint8_t index)
   planner.position.resetExtruder();
   planner.synchronize();
 
+  idler_select_filament_nbr(SelectedFilamentNbr);//get idler back into position to completly extract
+
   #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
 
@@ -109,6 +111,7 @@ void MSUMP::tool_change(uint8_t index)
 
 
   idler_select_filament_nbr(index);
+  SelectedFilamentNbr = index;
   
 
   //reload the new filament up to the nozzle/extruder gear if running a direct drive setup
@@ -135,9 +138,11 @@ void MSUMP::tool_change(uint8_t index)
     planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);
     planner.position.resetExtruder();
 
+    //disengage idler
+    idler_select_filament_nbr(-1);
     //finish loading
     position.e=nozzleExtruderGearLength*steps_per_mm_correction_factor;
-    planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);//two extruder moves at the same time: needs testing
+    planner.buffer_line(position, 10, MSU_EXTRUDER_ENBR);
     planner.synchronize();
    
   #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
@@ -157,6 +162,7 @@ void MSUMP::tool_change(uint8_t index)
   idlerPosition = absolutePosition;
   planner.position.e = storeExtruderPosition;
   changingFilament=false;
+  
 }
 
 
