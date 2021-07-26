@@ -33,26 +33,29 @@ bool idlerEngaged = true;//idler engaged or not, this is used in direct drive se
 bool idlerHomed=false;
 bool changingFilament=false;//keeps track of whether the MSU is performing a tool change or not. Will be used to trigger loading failure correction
 
-
+float msusteps = MSU_EXTRUDER_STEPS_PER_MM;
 bool loading=false;
 bool unloading=false;
 
 
 bool homingIdler=false;//homing status used in the homing sequence, but will also be useful in order to disable the bug where the idler won't move if the nozzle is cold(prevent cold extrusion feature)
 xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our MSU moves in order to be able to apply motion limits. We then apply the extruder movement we want to that
-
+float steps_per_mm_correction_factor =1;
 
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
-  double steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM / planner.settings.axis_steps_per_mm[E_AXIS_N(MSU_EXTRUDER_ENBR)];
-#else
-  double steps_per_mm_correction_factor = 1;
+  
+  float steps;
+
 #endif
 
-
-
 void MSUMP::tool_change(uint8_t index)
-{ changingFilament=true;
-  
+
+{
+  #if ENABLED (MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
+  steps = static_cast<float>(planner.settings.axis_steps_per_mm[E_AXIS]);
+  steps_per_mm_correction_factor =  msusteps /steps;
+  #endif
+  changingFilament=true;
 
   #ifdef MSU_DIRECT_DRIVE_SETUP
     if(!idlerEngaged)
@@ -188,7 +191,7 @@ void MSUMP::idler_select_filament_nbr(int index)
 //homing sequence of the idler. If this is called when using the servo motor it will initiate it
 
 void MSUMP::idler_home()
-{ 
+{
   #if ENABLED(MSU_SERVO_IDLER)
     msu.idler_servo_init();
   #else
