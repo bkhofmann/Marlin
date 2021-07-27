@@ -619,6 +619,7 @@ namespace Language_en {
   PROGMEM Language_Str MSG_MSU_CALIBRATE_TUBE_LENGHT       = _UxGT("Calibrate tube length");
   PROGMEM Language_Str MSG_MSU_MSU_BOWDEN_LENGHT           = _UxGT("Bowden tube length");
   PROGMEM Language_Str MSG_MSU_SET_IDLER_POSITION          = _UxGT("Set idler position");
+  PROGMEM Language_Str MSG_MSU_SET_SERVO_TO_POS_3          = _UxGT("Set servo to position 3");
 
   PROGMEM Language_Str MSG_MMU2_CHOOSE_FILAMENT_HEADER     = _UxGT("CHOOSE FILAMENT");
   PROGMEM Language_Str MSG_MMU2_MENU                       = _UxGT("MMU");
