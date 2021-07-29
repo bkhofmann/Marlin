@@ -16,30 +16,33 @@
   #include "../../module/servo.h"
 #endif
 
-float idlerPosition; //stores the idler position in mm
-float offsetEndstopTo1 = 3.9;//space from the endstop to the first bearing position(Filament 1)
-float spaceBetweenBearings = 3;//space in between each bearing
-float servopos1=20;//first bearing position
-float servobearingangle=26;//space between each bearings
-float parkedPosition = 0; //this is the parked position. when using the servo it will be the parked position in degree
-float absolutePosition;  //used to represent the position in mm where the idler aligns with the correct filament
-float storeExtruderPosition; //used to store the extruder position before the tool change so that we are able to reset everything.
+float idlerPosition;
+
+float offsetEndstopTo1 = 3.9;
+float spaceBetweenBearings = 3;
+
+float servopos1=20;
+float servobearingangle=26;
+
+float absolutePosition;
+float storeExtruderPosition; 
 float bowdenTubeLength = MSU_BOWDEN_TUBE_SETUP_LENGTH;
 float nozzleExtruderGearLength = MSU_NOZZLE_EXTRUDER_GEAR_LENGTH;
 
-int SelectedFilamentNbr = -1; //default to home position until at least one tool change has been performed
+int SelectedFilamentNbr = -1;
 
-bool idlerEngaged = true;//idler engaged or not, this is used in direct drive setup with the MSU disengaging and letting the extruder do everything
+bool idlerEngaged = true;
 bool idlerHomed=false;
-bool changingFilament=false;//keeps track of whether the MSU is performing a tool change or not. Will be used to trigger loading failure correction
-bool loading=false;
-bool unloading=false;
 
+//filament loading status, used for error handling
+bool changingFilament=false;
+bool loadingFilament=false;
+bool unloadingFilament=false;
+bool homingIdler=false;
 
-bool homingIdler=false;//homing status used in the homing sequence, but will also be useful in order to disable the bug where the idler won't move if the nozzle is cold(prevent cold extrusion feature)
-xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our MSU moves in order to be able to apply motion limits. We then apply the extruder movement we want to that
+xyze_pos_t position;
+
 float steps_per_mm_correction_factor =1;
-
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
   float msusteps = MSU_EXTRUDER_STEPS_PER_MM;
   float steps;
