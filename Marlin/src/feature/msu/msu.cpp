@@ -237,7 +237,8 @@ void MSUMP::move_msu_extruder(const float diff){
 }
 void MSUMP::filament_runout(){
   //TODO error handling for filament runout when the MSU is loading/unloading filament
-
+  if(loadingFilament)error_on_load();
+  if(unloadingFilament)error_on_unload();
   
 }
 
