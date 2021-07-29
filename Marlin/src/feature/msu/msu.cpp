@@ -32,8 +32,6 @@ int SelectedFilamentNbr = -1; //default to home position until at least one tool
 bool idlerEngaged = true;//idler engaged or not, this is used in direct drive setup with the MSU disengaging and letting the extruder do everything
 bool idlerHomed=false;
 bool changingFilament=false;//keeps track of whether the MSU is performing a tool change or not. Will be used to trigger loading failure correction
-
-float msusteps = MSU_EXTRUDER_STEPS_PER_MM;
 bool loading=false;
 bool unloading=false;
 
@@ -43,9 +41,8 @@ xyze_pos_t position;//we have to create a fake destination(x,y,z) when doing our
 float steps_per_mm_correction_factor =1;
 
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
-  
+  float msusteps = MSU_EXTRUDER_STEPS_PER_MM;
   float steps;
-
 #endif
 
 void MSUMP::tool_change(uint8_t index)
@@ -260,6 +257,7 @@ void MSUMP::move_msu_extruder(const float diff){
 }
 void MSUMP::filament_runout(){
   //TODO error handling for filament runout when the MSU is loading/unloading filament
+
   
 }
 
