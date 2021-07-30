@@ -188,26 +188,6 @@ void MSUMP::idler_select_filament_nbr(int index)
   #endif
 }
 
-
-//moves the idler to the specified position, negative value means parking the idler
-void MSUMP::idler_select_filament_nbr(int index)
-{ //TODO add limits: index can't be higher than the number of filaments
-  #if ENABLED(MSU_SERVO_IDLER)
-    MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
-  #else
-    absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
-
-    //park idler
-    if(index<0)absolutePosition=0;
-
-    position.e=-(absolutePosition - idlerPosition);
-    planner.buffer_line(position,  5, MSU_IDLER_ENBR);
-    planner.synchronize();
-    planner.position.resetExtruder();
-    if(index<0)idlerEngaged=false;;
-  #endif
-}
-
 //homing sequence of the idler. If this is called when using the servo motor it will initiate it
 
 void MSUMP::idler_home()
