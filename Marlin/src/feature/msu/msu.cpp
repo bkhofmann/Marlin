@@ -135,9 +135,14 @@ void MSUMP::idler_select_filament_nbr(int index)
     absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
     //park idler
     if(index<0)absolutePosition=0;
-    current_position.e+=-(absolutePosition - idlerPosition);
+
+    const float old = current_position.e;
+    current_position.e += -(absolutePosition - idlerPosition);
     planner.buffer_line(current_position,  5, MSU_IDLER_ENBR);
+    current_position.e = old;
+    planner.set_e_position_mm(old);
     planner.synchronize();
+
     if(index<0)idlerEngaged=false;;
   #endif
 }
@@ -152,10 +157,15 @@ void MSUMP::idler_home()
   #else
     homingIdler = true;
     endstops.enable(true);
-    current_position.e+= 100;
-    planner.buffer_line(current_position, 4, MSU_IDLER_ENBR); //move towards endstop until it's hit
-    planner.synchronize(); 
-    planner.position.resetExtruder();                                                   //wait for the move to finish
+
+
+    const float old = current_position.e;
+    current_position.e += 100;
+    planner.buffer_line(current_position,  4, MSU_IDLER_ENBR);
+    current_position.e = old;
+    planner.set_e_position_mm(old);
+    planner.synchronize();
+                                               //wait for the move to finish
     endstops.validate_homing_move();
     homingIdler = false;              //homing completed
     idlerPosition = 0;                //new idler position
@@ -185,20 +195,37 @@ void MSUMP::edit_MSU_BOWDEN_TUBE_SETUP_length(const float diff){
   bowdenTubeLength+=diff;
 }
 void MSUMP::move_extruder(float dist, uint8_t extruderNumber,const_feedRate_t speed, bool moveBothExtruders){
-  
 
-  current_position.e+= dist;
+  //current_position.e+= dist;
   if (moveBothExtruders)
   {
+    const float old = current_position.e;
+    current_position.e += dist;
     planner.buffer_line(current_position, speed, MSU_EXTRUDER_ENBR);
-    #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
+    current_position.e = old;
+    planner.set_e_position_mm(old);
+
+#if ENABLED(MSU_DIRECT_DRIVE_SETUP)
+    const float old = current_position.e;
     current_position.e += dist;
     planner.buffer_line(current_position, speed, MSU_ORIGINAL_EXTRUDER_ENBR);
+    current_position.e = old;
+    planner.set_e_position_mm(old);
+    planner.synchronize();
+
     #endif
   }
+
   else
+  {
+
+    const float old = current_position.e;
+    current_position.e += dist;
     planner.buffer_line(current_position, speed, extruderNumber);
-  planner.synchronize();
+    current_position.e = old;
+    planner.set_e_position_mm(old);
+    planner.synchronize();
+  }
 }
 void MSUMP::filament_runout(){
   //TODO error handling for filament runout when the MSU is loading/unloading filament
