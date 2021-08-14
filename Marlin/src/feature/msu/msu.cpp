@@ -104,7 +104,7 @@ void MSUMP::tool_change(uint8_t index)
 
   #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
     //put extra pressure to help the extruder gears grab the filament, this is a synched move with both the MSU and the actual extruder
-    move_extruder(3*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,10)
+    move_extruder(3*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,10);
     //disengage idler
     idler_select_filament_nbr(-1);
     //finish loading
