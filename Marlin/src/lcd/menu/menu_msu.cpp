@@ -45,7 +45,7 @@ void menu_msu_set_idler_position() {
 
 void menu_msu_adjust_bowden_length(){
   ui.defer_status_screen();//prevent timeout due to no input during the move
-  msu.move_msu_extruder(msu.get_MSU_BOWDEN_TUBE_SETUP_length()+30);
+  msu.move_extruder(msu.get_MSU_BOWDEN_TUBE_SETUP_length()+30,MSU_EXTRUDER_ENBR,10);
   if (ui.use_click())
     ui.goto_screen(menu_msu);
   if (ui.encoderPosition)
@@ -54,7 +54,7 @@ void menu_msu_adjust_bowden_length(){
     {
       const float diff = float(int32_t(ui.encoderPosition)) * ui.manual_move.menu_scale;
       msu.edit_MSU_BOWDEN_TUBE_SETUP_length(diff);
-      msu.move_msu_extruder(diff);
+      msu.move_extruder(diff,MSU_EXTRUDER_ENBR,10);
       ui.refresh(LCDVIEW_REDRAW_NOW);
     }
     ui.encoderPosition = 0;
