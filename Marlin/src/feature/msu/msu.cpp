@@ -130,8 +130,8 @@ void MSUMP::tool_change(uint8_t index)
 void MSUMP::idler_select_filament_nbr(int index)
 { //TODO add limits: index can't be higher than the number of filaments
   #if ENABLED(MSU_SERVO_IDLER)
-    if(index<0)MOVE_SERVO(MSU_SERVO_IDLER_NBR,0);
-    else MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
+    if(index<0)MOVE_SERVO(MSU_SERVO_IDLER_NBR,0+MSU_SERVO_OFFSET);
+    else MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle+MSU_SERVO_OFFSET);
   #else
     absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
     //park idler
