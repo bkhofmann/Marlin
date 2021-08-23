@@ -242,6 +242,7 @@
 
   #if ENABLED(MSU_SERVO_IDLER)
       #define MSU_SERVO_IDLER_NBR 0//if your board has servo support select the servo nbr you want to use
+      #define MSU_SERVO_OFFSET 0
       //(if you are not sure you can check in the pins file of your board but 0 will most likely be the default servo port for your board).
       //If your board doesn't  support them directly you can also define a custom one in your pins file once again
       
