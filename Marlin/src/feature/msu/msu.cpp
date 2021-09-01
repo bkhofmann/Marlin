@@ -241,26 +241,15 @@ void MSUMP::error_on_load(){
   move_extruder(-20, MSU_EXTRUDER_ENBR);
   //try loading it again
   move_extruder(20, MSU_EXTRUDER_ENBR);
-
 //TODO handle direct drive, add "attempt counter" to call for the user when the printer is unable to fix the load
 }
 
 void MSUMP::error_on_unload(){
   //push filament inside the nozzle
-  position.e= 10;
-  planner.buffer_line(position,  10, MSU_EXTRUDER_ENBR);
-  planner.position.resetExtruder();
-  planner.synchronize();
-  planner.position.resetExtruder();
-
-  gcode.dwell(2000);//fait for filament to "take shape"
+  move_extruder(20, MSU_EXTRUDER_ENBR);
 
   //retract it
-  position.e= -20;
-  planner.buffer_line(position,  10, MSU_EXTRUDER_ENBR);
-  planner.position.resetExtruder();
-  planner.synchronize();
-  planner.position.resetExtruder();
+  move_extruder(-20, MSU_EXTRUDER_ENBR);
 
 //TODO handle direct drive, add "attempt counter" to call for the user when the printer is unable to fix the unload
 }
