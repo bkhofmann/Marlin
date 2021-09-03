@@ -39,6 +39,10 @@
 #include "../module/printcounter.h"
 #include "../module/temperature.h"
 
+#if ENABLED(MSU)
+  #include "../feature/msu/msu.h"
+#endif
+
 #if ENABLED(FWRETRACT)
   #include "fwretract.h"
 #endif
@@ -639,6 +643,8 @@ void resume_print(const_float_t slow_load_length/*=0*/, const_float_t fast_load_
   // Now all extrusion positions are resumed and ready to be confirmed
   // Set extruder to saved position
   planner.set_e_position_mm((destination.e = current_position.e = resume_position.e));
+  DEBUG_ECHO_MSG("Changed e position, MSU tool change state:");
+  DEBUG_ECHOLN(msu.active_filament_change());
 
   ui.pause_show_message(PAUSE_MESSAGE_STATUS);
 
