@@ -238,19 +238,17 @@ void MSUMP::filament_runout(){
 
 void MSUMP::error_on_load(){
   //retract filament
-  move_extruder(-20, MSU_EXTRUDER_ENBR);
+  move_extruder(-20, MSU_EXTRUDER_ENBR,10);
   //try loading it again
-  move_extruder(20, MSU_EXTRUDER_ENBR);
+  move_extruder(20, MSU_EXTRUDER_ENBR,10);
 //TODO handle direct drive, add "attempt counter" to call for the user when the printer is unable to fix the load
 }
 
 void MSUMP::error_on_unload(){
   //push filament inside the nozzle
-  move_extruder(20, MSU_EXTRUDER_ENBR);
-
+  move_extruder(20, MSU_EXTRUDER_ENBR,10);
   //retract it
-  move_extruder(-20, MSU_EXTRUDER_ENBR);
-
+  move_extruder(-20, MSU_EXTRUDER_ENBR,10);
 //TODO handle direct drive, add "attempt counter" to call for the user when the printer is unable to fix the unload
 }
 
