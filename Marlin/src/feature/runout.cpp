@@ -78,6 +78,10 @@ void event_filament_runout(const uint8_t extruder) {
 
   if (did_pause_print) return;  // Action already in progress. Purge triggered repeated runout.
 
+  /*#if ENABLED(MSU)
+    if(msu.active_filament_change()) msu.filament_runout();
+  #endif*/
+
   #if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
     if (migration.in_progress) {
       DEBUG_ECHOLNPGM("Migration Already In Progress");
@@ -95,9 +99,7 @@ void event_filament_runout(const uint8_t extruder) {
     const char tool = '0' + TERN0(MULTI_FILAMENT_SENSOR, extruder);
   #endif
 
-  /*#if ENABLED(MSU)
-    msu.filament_runout();
-  #endif*/
+  
 
   //action:out_of_filament
   #if ENABLED(HOST_PROMPT_SUPPORT)
