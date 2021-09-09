@@ -229,10 +229,11 @@ void MSUMP::move_extruder(float dist, uint8_t extruderNumber,const_feedRate_t sp
 }
 void MSUMP::filament_runout(){
   //TODO error handling for filament runout when the MSU is loading/unloading filament
-  #if ENABLED(FILAMENT_MOTION_SENSOR)
+  /*#if ENABLED(FILAMENT_MOTION_SENSOR)
   if(loadingFilament)error_on_load();
   if(unloadingFilament)error_on_unload();
-  #endif
+  #endif*/
+  SERIAL_ECHO_MSG("runout during load!!!");
 }
 
 

@@ -78,9 +78,10 @@ void event_filament_runout(const uint8_t extruder) {
 
   if (did_pause_print) return;  // Action already in progress. Purge triggered repeated runout.
 
-  /*#if ENABLED(MSU)
+  #if ENABLED(MSU)
     if(msu.active_filament_change()) msu.filament_runout();
-  #endif*/
+    else SERIAL_ECHO_MSG("runout not related to MSU");
+  #endif
 
   #if ENABLED(TOOLCHANGE_MIGRATION_FEATURE)
     if (migration.in_progress) {
