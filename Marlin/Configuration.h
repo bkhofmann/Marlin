@@ -263,7 +263,7 @@
     //#defin IDLER_ENDSTOP_PIN  //TODO              for a custom endstop pin. 
   #endif
 
-  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 470//bowden tube length from the crossing point of the merger to the nozzle
+  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 440//bowden tube length from the crossing point of the merger to the nozzle
   #define MSU_NOZZLE_EXTRUDER_GEAR_LENGTH 40 //Only necessary for direct drive setups, the distance from the extruder gear up to the nozzle. 
 
 #endif
@@ -1451,7 +1451,7 @@
  * RAMPS-based boards use SERVO3_PIN for the first runout sensor.
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  */
-//#define FILAMENT_RUNOUT_SENSOR
+#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define FIL_RUNOUT_ENABLED_DEFAULT true // Enable the sensor on startup. Override with M412 followed by M500.
   #define NUM_RUNOUT_SENSORS   1          // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
