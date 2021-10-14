@@ -198,7 +198,7 @@
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-#define SINGLENOZZLE
+//#define SINGLENOZZLE
 
 // Save and restore temperature and fan speed on tool-change.
 // Set standby for the unselected tool with M104/106/109 T...
@@ -2507,7 +2507,7 @@
 //
 // SAV OLEd LCD module support using either SSD1306 or SH1106 based LCD modules
 //
-#define SAV_3DGLCD
+//#define SAV_3DGLCD
 #if ENABLED(SAV_3DGLCD)
   #define U8GLIB_SSD1306
   //#define U8GLIB_SH1106
@@ -2911,7 +2911,7 @@
  * Set this manually if there are extra servos needing manual control.
  * Set to 0 to turn off servo support.
  */
-//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
