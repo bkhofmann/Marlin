@@ -179,7 +179,7 @@ void MSUMP::idler_home()
 #if ENABLED(MSU_SERVO_IDLER)
 //servo initiation sequence
 void MSUMP::idler_servo_init(){
-  idler_select_filament_nbr(0);
+  idler_select_filament_nbr(-1);//set idler to parked position
 }
 #endif
 
