@@ -104,7 +104,7 @@ void MSUMP::tool_change(uint8_t index)
 
   #ifdef MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
     //put extra pressure to help the extruder gears grab the filament, this is a synched move with both the MSU and the actual extruder
-    move_extruder(3*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,10)
+    move_extruder(3*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,10);
     //disengage idler
     idler_select_filament_nbr(-1);
     //finish loading
@@ -130,7 +130,8 @@ void MSUMP::tool_change(uint8_t index)
 void MSUMP::idler_select_filament_nbr(int index)
 { //TODO add limits: index can't be higher than the number of filaments
   #if ENABLED(MSU_SERVO_IDLER)
-    MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle);
+    if(index<0)MOVE_SERVO(MSU_SERVO_IDLER_NBR,270);
+    else MOVE_SERVO(MSU_SERVO_IDLER_NBR,servopos1+index*servobearingangle+MSU_SERVO_OFFSET);
   #else
     absolutePosition = offsetEndstopTo1 + index * spaceBetweenBearings;
     //park idler
@@ -178,7 +179,7 @@ void MSUMP::idler_home()
 #if ENABLED(MSU_SERVO_IDLER)
 //servo initiation sequence
 void MSUMP::idler_servo_init(){
-  idler_select_filament_nbr(0);
+  idler_select_filament_nbr(-1);//set idler to parked position
 }
 #endif
 
@@ -229,11 +230,9 @@ void MSUMP::move_extruder(float dist, uint8_t extruderNumber,const_feedRate_t sp
 }
 void MSUMP::filament_runout(){
   //TODO error handling for filament runout when the MSU is loading/unloading filament
-  /*#if ENABLED(FILAMENT_MOTION_SENSOR)
   if(loadingFilament)error_on_load();
   if(unloadingFilament)error_on_unload();
-  #endif*/
-  SERIAL_ECHO_MSG("runout during load!!!");
+  
 }
 
 
