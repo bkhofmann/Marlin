@@ -87,13 +87,14 @@ void MSUMP::tool_change(uint8_t index)
   #endif //MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP
 
   //unload filament until it clears the merger
-  move_extruder(-bowdenTubeLength*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,25);
+  move_extruder((-bowdenTubeLength)*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,25);
 
   idler_select_filament_nbr(index);
+  
   SelectedFilamentNbr = index;
   
   //reload the new filament up to the nozzle/extruder gear if running a direct drive setup
-  move_extruder(bowdenTubeLength*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,25);
+  move_extruder((bowdenTubeLength+1)*steps_per_mm_correction_factor,MSU_EXTRUDER_ENBR,25);
 
   #ifdef MSU_DIRECT_DRIVE_SETUP
     //put extra pressure to help the extruder gears grab the filament

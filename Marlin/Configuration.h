@@ -264,7 +264,7 @@
     //#defin IDLER_ENDSTOP_PIN  //TODO              for a custom endstop pin. 
   #endif
 
-  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 150//bowden tube length from the crossing point of the merger to the nozzle
+  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 170//bowden tube length from the crossing point of the merger to the nozzle
   #define MSU_NOZZLE_EXTRUDER_GEAR_LENGTH 40 //Only necessary for direct drive setups, the distance from the extruder gear up to the nozzle. 
 
 #endif
@@ -2916,7 +2916,7 @@
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
 // If the servo can't reach the requested position, increase it.
-#define SERVO_DELAY { 300 }
+#define SERVO_DELAY { 1000 }
 
 // Only power servos during movement, otherwise leave off to prevent jitter
 //#define DEACTIVATE_SERVOS_AFTER_MOVE
