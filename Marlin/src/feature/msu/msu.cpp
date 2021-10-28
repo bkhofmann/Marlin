@@ -22,7 +22,7 @@ float offsetEndstopTo1 = 3.9;
 float spaceBetweenBearings = 3;
 
 float servopos1=20;
-float servobearingangle=27;
+float servobearingangle=28;
 
 float absolutePosition;
 float storeExtruderPosition; 
