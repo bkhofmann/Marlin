@@ -139,7 +139,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_BTT_SKR_PRO_V1_2
+  #define MOTHERBOARD BOARD_BTT_SKR_V2_0_REV_B
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
@@ -192,13 +192,13 @@
 
 // This defines the number of extruders
 // :[0, 1, 2, 3, 4, 5, 6, 7, 8]
-#define EXTRUDERS 3
+#define EXTRUDERS 1
 
 // Generally expected filament diameter (1.75, 2.85, 3.0, ...). Used for Volumetric, Filament Width Sensor, etc.
 #define DEFAULT_NOMINAL_FILAMENT_DIA 1.75
 
 // For Cyclops or any "multi-extruder" that shares a single nozzle.
-#define SINGLENOZZLE
+//#define SINGLENOZZLE
 
 // Save and restore temperature and fan speed on tool-change.
 // Set standby for the unselected tool with M104/106/109 T...
@@ -234,7 +234,7 @@
   #define MSU_BOWDEN_TUBE_SETUP //enable when working with the MSU as a bowden extruder itself
   //#define MSU_DIRECT_DRIVE_SETUP //enable to work in a direct drive setup, if doing so don't forget to disable MSU_BOWDEN_TUBE_SETUP
   //#define MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP //enable to work in a direct drive setup where both the MSU extruder and the actual extruder are connected to a parrallel module
-  //#define MSU_SERVO_IDLER //enable to control the idler using a servo
+  #define MSU_SERVO_IDLER //enable to control the idler using a servo
   
   #define MSU_MENU//LCD Menu
 
@@ -263,7 +263,7 @@
     //#defin IDLER_ENDSTOP_PIN  //TODO              for a custom endstop pin. 
   #endif
 
-  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 440//bowden tube length from the crossing point of the merger to the nozzle
+  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 150//bowden tube length from the crossing point of the merger to the nozzle
   #define MSU_NOZZLE_EXTRUDER_GEAR_LENGTH 40 //Only necessary for direct drive setups, the distance from the extruder gear up to the nozzle. 
 
 #endif
@@ -889,7 +889,7 @@
 //#define J_DRIVER_TYPE  A4988
 //#define K_DRIVER_TYPE  A4988
 #define E0_DRIVER_TYPE TMC2208
-#define E1_DRIVER_TYPE TMC2208
+//#define E1_DRIVER_TYPE TMC2208
 //#define E2_DRIVER_TYPE A4988
 //#define E3_DRIVER_TYPE A4988
 //#define E4_DRIVER_TYPE A4988
@@ -943,7 +943,7 @@
  * Override with M92
  *                                      X, Y, Z [, I [, J [, K]]], E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 150, 120}
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 150}
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -1348,7 +1348,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR false
+#define INVERT_E0_DIR true
 #define INVERT_E1_DIR false
 #define INVERT_E2_DIR false
 #define INVERT_E3_DIR false
@@ -2910,7 +2910,7 @@
  * Set this manually if there are extra servos needing manual control.
  * Set to 0 to turn off servo support.
  */
-//#define NUM_SERVOS 3 // Servo index starts with 0 for M280 command
+#define NUM_SERVOS 1 // Servo index starts with 0 for M280 command
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
