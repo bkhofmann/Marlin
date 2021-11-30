@@ -10,7 +10,8 @@
 #include "../../module/stepper.h"
 #include "../../gcode/parser.h"
 #include "../../module/endstops.h"
-
+#include "../../module/temperature.h"
+#include "../../libs/numtostr.h"
 
 #if ENABLED(MSU_SERVO_IDLER)
   #include "../../module/servo.h"
@@ -63,11 +64,25 @@ void MSUMP::tool_change(uint8_t index)
   {
     idler_select_filament_nbr(SelectedFilamentNbr);
   }
-  #endif//MSU_DIRECT_DRIVE_SETUP
+  #endif //MSU_DIRECT_DRIVE_SETUP
   #ifdef MSU_SERVO_IDLER
-  if(firstToolChange)idler_select_filament_nbr(-1);//set idler to parked position
+    if(firstToolChange){
+      if (thermalManager.tooColdToExtrude)
+      {
+        if (thermalManager.targetTooColdToExtrude)
+        {
+        thermalManager.setTargetHotend(thermalManager.extrude_min_temp, active_extruder);
+        thermalManager.wait_for_hotend(active_extruder);
+        }
+      else
+      {
+          thermalManager.wait_for_hotend(active_extruder);
+      }
+   }
+    firstToolChange=false;
+  }
   #else
-  if(!idlerHomed)idler_home();
+    if(!idlerHomed)idler_home();
   #endif
 
   //clear the extruder gears
