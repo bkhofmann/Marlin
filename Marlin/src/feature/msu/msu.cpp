@@ -39,6 +39,7 @@ bool changingFilament=false;
 bool loadingFilament=false;
 bool unloadingFilament=false;
 bool homingIdler=false;
+bool firstToolChange=true;
 
 xyze_pos_t position;
 
@@ -63,8 +64,11 @@ void MSUMP::tool_change(uint8_t index)
     idler_select_filament_nbr(SelectedFilamentNbr);
   }
   #endif//MSU_DIRECT_DRIVE_SETUP
-  
+  #ifdef MSU_SERVO_IDLER
+  if(firstToolChange)idler_select_filament_nbr(-1);//set idler to parked position
+  #else
   if(!idlerHomed)idler_home();
+  #endif
 
   //clear the extruder gears
   #ifdef MSU_DIRECT_DRIVE_SETUP
@@ -153,9 +157,7 @@ void MSUMP::idler_select_filament_nbr(int index)
 
 void MSUMP::idler_home()
 {
-  #if ENABLED(MSU_SERVO_IDLER)
-    msu.idler_servo_init();
-  #else
+  #if DISABLED(MSU_SERVO_IDLER)
     homingIdler = true;
     endstops.enable(true);
 
@@ -171,19 +173,10 @@ void MSUMP::idler_home()
     homingIdler = false;              //homing completed
     idlerPosition = 0;                //new idler position
     endstops.not_homing();
+    idlerHomed=true;
   #endif
-  idlerHomed=true;
-  
+ 
 }
-
-#if ENABLED(MSU_SERVO_IDLER)
-//servo initiation sequence
-void MSUMP::idler_servo_init(){
-  idler_select_filament_nbr(-1);//set idler to parked position
-}
-#endif
-
-
 
 
 //used in the homing process. Used to fix the cold extrusion false trigger when performing idler moves
