@@ -78,6 +78,12 @@ void MSUMP::tool_change(uint8_t index)
       {
           thermalManager.wait_for_hotend(active_extruder);
       }
+      //ramming before unloading
+      move_extruder(5,MSU_EXTRUDER_ENBR,5,true);
+      move_extruder(-6,MSU_EXTRUDER_ENBR,30,true);
+      move_extruder(5,MSU_EXTRUDER_ENBR,5,true);
+      move_extruder(-10,MSU_EXTRUDER_ENBR,30,true);
+
    }
     firstToolChange=false;
   }
@@ -214,15 +220,16 @@ void MSUMP::move_extruder(float dist, uint8_t extruderNumber,const_feedRate_t sp
     current_position.e = old;
     planner.set_e_position_mm(old);
 
-#if ENABLED(MSU_DIRECT_DRIVE_SETUP)
-    const float old = current_position.e;
-    current_position.e += dist;
-    planner.buffer_line(current_position, speed, MSU_ORIGINAL_EXTRUDER_ENBR);
-    current_position.e = old;
-    planner.set_e_position_mm(old);
+    #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
+      const float old = current_position.e;
+      current_position.e += dist;
+      planner.buffer_line(current_position, speed, MSU_ORIGINAL_EXTRUDER_ENBR);
+      current_position.e = old;
+      planner.set_e_position_mm(old);
+    #endif
     planner.synchronize();
 
-    #endif
+    
   }
 
   else
