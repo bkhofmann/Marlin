@@ -65,7 +65,8 @@ void MSUMP::tool_change(uint8_t index)
   }
   #endif//MSU_DIRECT_DRIVE_SETUP
   #ifdef MSU_SERVO_IDLER
-  if(firstToolChange)idler_select_filament_nbr(-1);//set idler to parked position
+  if(firstToolChange){idler_select_filament_nbr(-1);//set idler to parked position
+  firstToolChange=false;}
   #else
   if(!idlerHomed)idler_home();
   #endif
