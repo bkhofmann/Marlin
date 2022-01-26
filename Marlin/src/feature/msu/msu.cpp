@@ -32,7 +32,7 @@ float nozzleExtruderGearLength = MSU_NOZZLE_EXTRUDER_GEAR_LENGTH;
 int SelectedFilamentNbr = -1;
 
 bool idlerEngaged = true;
-bool idlerParked=false;
+bool idlerHomed=false;
 
 //filament loading status, used for error handling
 bool changingFilament=false;
@@ -64,9 +64,11 @@ void MSUMP::tool_change(uint8_t index)
     idler_select_filament_nbr(SelectedFilamentNbr);
   }
   #endif//MSU_DIRECT_DRIVE_SETUP
-
-  if(!idlerParked)idler_park();
-
+  #ifdef MSU_SERVO_IDLER
+  if(firstToolChange)idler_select_filament_nbr(-1);//set idler to parked position
+  #else
+  if(!idlerHomed)idler_home();
+  #endif
 
   //clear the extruder gears
   #ifdef MSU_DIRECT_DRIVE_SETUP
@@ -153,11 +155,8 @@ void MSUMP::idler_select_filament_nbr(int index)
 
 //homing sequence of the idler. If this is called when using the servo motor it will initiate it
 
-void MSUMP::idler_park()
+void MSUMP::idler_home()
 {
-  #if ENABLED(MSU_SERVO_IDLER)
-  idler_select_filament_nbr(-1);//set idler to parked position
-  #endif
   #if DISABLED(MSU_SERVO_IDLER)
     homingIdler = true;
     endstops.enable(true);
@@ -174,9 +173,9 @@ void MSUMP::idler_park()
     homingIdler = false;              //homing completed
     idlerPosition = 0;                //new idler position
     endstops.not_homing();
-    
+    idlerHomed=true;
   #endif
-  idlerParked=true;
+ 
 }
 
 
