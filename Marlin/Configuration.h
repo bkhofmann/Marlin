@@ -253,7 +253,7 @@
   #endif
 
   #define MSU_BOWDEN_TUBE_LENGTH 600 //length between MSU and extruder
-
+  #define MSU_GEAR_LENGTH 40 //for direct drive setups only, amount of retraction needed to disengage the filaments from the extruder gears
 #endif
 
 // A dual extruder that uses a single stepper motor
