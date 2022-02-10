@@ -612,7 +612,7 @@ namespace Language_en {
   PROGMEM Language_Str MSG_LCD_PROBING_FAILED              = _UxGT("Probing Failed");
 
   PROGMEM Language_Str MSG_MSU_MENU                        = _UxGT("MSU");
-  PROGMEM Language_Str MSG_MSU_IDLER_HOME                  = _UxGT("Home idler");
+  PROGMEM Language_Str MSG_MSU_IDLER_PARK_IDLER            = _UxGT("Park idler");
   PROGMEM Language_Str MSG_MSU_SELECT_FILAMENT             = _UxGT("Choose filament");
   PROGMEM Language_Str MSG_MSU_FILAMENT_N                  = _UxGT("Filament ~");
   PROGMEM Language_Str MSG_MSU_IDLER_POSITION_N            = _UxGT("Idler position ~");
