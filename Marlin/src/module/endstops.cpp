@@ -51,10 +51,6 @@
   #include "probe.h"
 #endif
 
-#if ENABLED(MSU)
- #include "../feature/msu/msu.h"
-#endif
-
 Endstops endstops;
 
 // private:
@@ -1051,12 +1047,6 @@ void Endstops::update() {
           #endif
         #endif
       }
-    }
-  #endif
-
-  #if ENABLED(MSU) && DISABLED(MSU_SERVO_IDLER)
-    if(msu.idler_is_homing()) {
-      PROCESS_ENDSTOP(MSU_IDLER_ENDSTOP_AXIS, MSU_IDLER_ENDSTOP_MINMAX);
     }
   #endif
 
