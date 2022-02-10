@@ -51,10 +51,6 @@
   #include "probe.h"
 #endif
 
-#if ENABLED(MSU)
- #include "../feature/msu/msu.h"
-#endif
-
 Endstops endstops;
 
 // private:
