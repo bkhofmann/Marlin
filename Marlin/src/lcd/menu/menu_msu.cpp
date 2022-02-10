@@ -43,7 +43,7 @@ void menu_msu_set_idler_position() {
   END_MENU();
 }
 
-void menu_msu_adjust_bowden_length(){
+/*void menu_msu_adjust_bowden_length(){
   ui.defer_status_screen();//prevent timeout due to no input during the move
   msu.move_extruder(msu.get_MSU_BOWDEN_TUBE_SETUP_length()+30,MSU_EXTRUDER_ENBR,10);
   if (ui.use_click())
@@ -65,7 +65,7 @@ void menu_msu_adjust_bowden_length(){
         GET_TEXT(MSG_MSU_MSU_BOWDEN_LENGHT),
         ftostr41sign(msu.get_MSU_BOWDEN_TUBE_SETUP_length()));
   }
-}
+}*/
 
 void menu_msu_move_extruder()
 {
@@ -94,7 +94,7 @@ void menu_msu_move_extruder()
 void menu_msu() {
   START_MENU();
   BACK_ITEM(MSG_MAIN);
-  ACTION_ITEM(MSG_MSU_IDLER_HOME, []{ msu.idler_home(); });
+  ACTION_ITEM(MSG_MSU_IDLER_PARK_IDLER, []{ msu.idler_select_filament_nbr(-1); });
   SUBMENU(MSG_MSU_SELECT_FILAMENT, menu_msu_change_filament);
   SUBMENU(MSG_MSU_SET_IDLER_POSITION, menu_msu_set_idler_position);
   
