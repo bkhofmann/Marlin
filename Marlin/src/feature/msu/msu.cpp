@@ -48,7 +48,7 @@ void MSUMP::tool_change(uint8_t index)
   #endif
 }
 
-void MSUMP::move_extruder(float dist, const_feedRate_t speed, bool moveBothExtruders=false)
+void MSUMP::move_extruder(float dist, const_feedRate_t speed, bool moveBothExtruders)
 {
   const float old = current_position.e;
   current_position.e += dist;
