@@ -17,21 +17,39 @@ xyze_pos_t position;
 
 float steps_per_mm_correction_factor = 1;
 #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
-steps_per_mm_correction_factor = static_cast<float>(planner.settings.axis_steps_per_mm[E_AXIS]);
+steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM/static_cast<float>(planner.settings.axis_steps_per_mm[E_AXIS]);
 #endif
 void MSUMP::tool_change(uint8_t index)
 {
+  #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
+    move_extruder(-MSU_GEAR_LENGTH,25);
+  #endif
+
+  #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
+    move_extruder(-MSU_GEAR_LENGTH,25);
+  #endif
+
   idler_select_filament_nbr(selected_filament_nbr);
-  move_extruder(-MSU_BOWDEN_TUBE_LENGTH,25);
+  move_extruder(-MSU_BOWDEN_TUBE_LENGTH*steps_per_mm_correction_factor,25);
   idler_select_filament_nbr(index);
   selected_filament_nbr=index;
-  move_extruder(MSU_BOWDEN_TUBE_LENGTH,25);
+  move_extruder(MSU_BOWDEN_TUBE_LENGTH*steps_per_mm_correction_factor,25);
 
+  #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
+    move_extruder(4,25);
+    idler_select_filament_nbr(-1);
+    move_extruder(MSU_GEAR_LENGTH,25);
+  #endif
+
+  #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
+    move_extruder(4,25);
+    idler_select_filament_nbr(-1);
+    move_extruder(MSU_GEAR_LENGTH,25);
+  #endif
 }
 
-void MSUMP::move_extruder(float dist, const_feedRate_t speed, bool moveBothExtruders)
+void MSUMP::move_extruder(float dist, const_feedRate_t speed, bool moveBothExtruders=false)
 {
-
   const float old = current_position.e;
   current_position.e += dist;
   planner.buffer_line(current_position, speed, MSU_EXTRUDER_NBR);
@@ -48,7 +66,7 @@ void MSUMP::move_extruder(float dist, const_feedRate_t speed, bool moveBothExtru
       planner.set_e_position_mm(old);
     }
   #endif
-
+  
   planner.synchronize();
 }
 
