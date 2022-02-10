@@ -231,42 +231,29 @@
  */
 #define MSU
 #if ENABLED(MSU)
-  #define MSU_BOWDEN_TUBE_SETUP //enable when working with the MSU as a bowden extruder itself
-  //#define MSU_DIRECT_DRIVE_SETUP //enable to work in a direct drive setup, if doing so don't forget to disable MSU_BOWDEN_TUBE_SETUP
-  //#define MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP //enable to work in a direct drive setup where both the MSU extruder and the actual extruder are connected to a parrallel module
-  #define MSU_SERVO_IDLER //enable to control the idler using a servo
-  
+
+  #define MSU_BOWDEN_TUBE_SETUP //enable when using a bowden style setup
+  //#define MSU_DIRECT_DRIVE_SETUP //enable when using a direct-drive setup
+  //#define MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP //enable when using a direct-drive setup using a single driver for both the MSU and the extruder
+
   #define MSU_MENU//LCD Menu
 
-  #define MSU_EXTRUDER_ENBR 0//define the MSU extruder motor nbr. ex: when using the E1 port and if defined correctly in the pins file of you board you would use MSU_EXTRUDER_ENBR 1
+  #define MSU_SERVO_IDLER_NBR 0 //define the servo motor number
+  #define MSU_SERVO_OFFSET 0 //defines the offset in degrees for the idler, this can be used to fine tune idler alignment
+  #define MSU_BEARING_ANGLES 26 //defines the angle from on ball-bearing to the next on the idler
 
-  #if ENABLED(MSU_SERVO_IDLER)
-      #define MSU_SERVO_IDLER_NBR 0//if your board has servo support select the servo nbr you want to use
-      #define MSU_SERVO_OFFSET 0
-      //(if you are not sure you can check in the pins file of your board but 0 will most likely be the default servo port for your board).
-      //If your board doesn't  support them directly you can also define a custom one in your pins file once again
-      
-  #else
-    #define MSU_IDLER_ENBR 1 //define the idler extruder motor nbr.
-  #endif
+  #define MSU_EXTRUDER_NBR 0 //define the MSU extruder motor number (as setup in your board pins file)
 
   #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
-    #define MSU_ORIGINAL_EXTRUDER_ENBR 2//define the extruder nbr that the actual extruder is connected to 
+    #define MSU_ORIGINAL_EXTRUDER_NBR 2//define the extruder nbr that the actual extruder is connected to 
   #endif
 
   #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
-    #define MSU_EXTRUDER_STEPS_PER_MM 120 //defines the steps per mm of the extruder on the MSU. Shouldn't require any tuning
+    #define MSU_EXTRUDER_STEPS_PER_MM 120 //steps per mm of the MSU, should not require any tuning. Necessary since we are using a single driver with motors that potentially have different steps per mm
   #endif
 
-  #if DISABLED(MSU_SERVO_IDLER)
-    #define MSU_IDLER_ENDSTOP_AXIS X //select the endstop connected
-    #define MSU_IDLER_ENDSTOP_MINMAX MAX
-    //#defin IDLER_ENDSTOP_PIN  //TODO              for a custom endstop pin. 
-  #endif
-
-  #define MSU_BOWDEN_TUBE_SETUP_LENGTH 640//bowden tube length from the crossing point of the merger to the nozzle
-  #define MSU_NOZZLE_EXTRUDER_GEAR_LENGTH 40 //Only necessary for direct drive setups, the distance from the extruder gear up to the nozzle. 
-
+  #define MSU_BOWDEN_TUBE_LENGTH 640 //length between MSU and extruder
+  #define MSU_GEAR_LENGTH 40 //for direct drive setups only, amount of retraction needed to disengage the filaments from the extruder gears
 #endif
 
 // A dual extruder that uses a single stepper motor
