@@ -239,7 +239,7 @@
   #define MSU_MENU//LCD Menu
 
   #define MSU_SERVO_IDLER_NBR 0 //define the servo motor number
-  #define MSU_SERVO_OFFSET 0 //defines the offset in degrees for the idler, this can be used to fine tune idler alignment
+  #define MSU_SERVO_OFFSET 3 //defines the offset in degrees for the idler, this can be used to fine tune idler alignment
   #define MSU_BEARING_ANGLES 26 //defines the angle from on ball-bearing to the next on the idler
 
   #define MSU_EXTRUDER_NBR 0 //define the MSU extruder motor number (as setup in your board pins file)
@@ -252,7 +252,7 @@
     #define MSU_EXTRUDER_STEPS_PER_MM 120 //steps per mm of the MSU, should not require any tuning. Necessary since we are using a single driver with motors that potentially have different steps per mm
   #endif
 
-  #define MSU_BOWDEN_TUBE_LENGTH 640 //length between MSU and extruder
+  #define MSU_BOWDEN_TUBE_LENGTH 590 //length between MSU and extruder
   #define MSU_GEAR_LENGTH 40 //for direct drive setups only, amount of retraction needed to disengage the filaments from the extruder gears
 #endif
 
