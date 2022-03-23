@@ -116,7 +116,6 @@ namespace Language_en {
   PROGMEM Language_Str MSG_LOAD_FILAMENT            = u8"Load/Extrude";
   PROGMEM Language_Str MSG_MOMENTARY                = u8"Momentary";
   PROGMEM Language_Str MSG_CONTINUOUS               = u8"Continuous";
-  PROGMEM Language_Str MSG_PLEASE_WAIT              = u8"Please wait...";
   PROGMEM Language_Str MSG_PRINT_MENU               = u8"Print Menu";
   PROGMEM Language_Str MSG_FINE_MOTION              = u8"Fine motion";
   PROGMEM Language_Str MSG_ENABLE_MEDIA             = u8"Enable Media";
@@ -130,7 +129,7 @@ namespace Language_en {
   PROGMEM Language_Str MSG_EEPROM_RESTORED          = u8"Settings restored from backup";
   PROGMEM Language_Str MSG_EEPROM_RESET             = u8"Settings restored to default";
   PROGMEM Language_Str MSG_EEPROM_SAVED             = u8"Settings saved!";
-  PROGMEM Language_Str MSG_EEPROM_SAVE_PROMPT       = u8"Do you wish to save these settings for next power-on?";
+  PROGMEM Language_Str MSG_EEPROM_SAVE_PROMPT       = u8"Settings applied. Save these settings for next power-on?";
   PROGMEM Language_Str MSG_EEPROM_RESET_WARNING     = u8"Are you sure? Customizations will be lost.";
 
   PROGMEM Language_Str MSG_PASSCODE_REJECTED        = u8"Wrong passcode!";
@@ -145,8 +144,7 @@ namespace Language_en {
   PROGMEM Language_Str MSG_LEVELING                 = u8"Leveling";
   PROGMEM Language_Str MSG_AXIS_LEVELING            = u8"Axis Leveling";
   PROGMEM Language_Str MSG_PROBE_BED                = u8"Probe Mesh";
-  PROGMEM Language_Str MSG_SHOW_MESH                = u8"View Mesh";
-  PROGMEM Language_Str MSG_PRINT_TEST               = u8"Print Test";
+  PROGMEM Language_Str MSG_PRINT_TEST               = u8"Print Test (PLA)";
   PROGMEM Language_Str MSG_MOVE_Z_TO_TOP            = u8"Raise Z to Top";
 
   #if ENABLED(TOUCH_UI_LULZBOT_BIO)
