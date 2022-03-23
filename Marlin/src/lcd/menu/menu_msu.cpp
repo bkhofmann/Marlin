@@ -22,7 +22,8 @@
 
 #include "../../inc/MarlinConfig.h"
 
-#if BOTH(HAS_LCD_MENU, MSU_MENU)
+#if  BOTH(HAS_MARLINUI_MENU, MSU_MENU)
+
 #include "menu_msu.h"
 #include "../../feature/msu/msu.h"
 #include "../../module/planner.h"
@@ -103,4 +104,4 @@ void menu_msu() {
   END_MENU();
 }
 
-#endif // HAS_LCD_MENU && MSU_MENU
+#endif // MSU_MENU
