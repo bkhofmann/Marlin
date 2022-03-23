@@ -55,7 +55,7 @@
 #endif
 
 #if ENABLED(MSU)
-  #include "../../lcd/menu/menu_msu.h"
+  #include "menu_msu.h"
 #endif
 
 #if ENABLED(PASSWORD_FEATURE)
