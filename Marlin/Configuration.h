@@ -241,7 +241,7 @@
   #define MSU_SERVO_IDLER_NBR 0 //define the servo motor number
   #define MSU_SERVO_OFFSET 0 //defines the offset in degrees for the idler, this can be used to fine tune idler alignment
   #define MSU_BEARING_ANGLES 26 //defines the angle from on ball-bearing to the next on the idler
-
+  #define MSU_SPEED 25 //unload and load speed of the MSU in mm/s, fine tuning can be done from the slicer
   #define MSU_EXTRUDER_NBR 0 //define the MSU extruder motor number (as setup in your board pins file)
 
   #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
