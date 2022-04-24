@@ -85,6 +85,7 @@
 //
 #ifndef SERVO0_PIN
   #define SERVO0_PIN                       P2_00
+  #define SERVO1_PIN                       P1_26
 #endif
 
 //
