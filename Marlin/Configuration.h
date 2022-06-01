@@ -243,6 +243,7 @@
   #define MSU_BEARING_ANGLES 26 //defines the angle from on ball-bearing to the next on the idler
   #define MSU_SPEED 25 //unload and load speed of the MSU in mm/s, fine tuning can be done from the slicer
   #define MSU_EXTRUDER_NBR 0 //define the MSU extruder motor number (as setup in your board pins file)
+  #define MSU_PARKING_POSITION 270 //define angle of the servo for the parking position
 
   #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
     #define MSU_ORIGINAL_EXTRUDER_NBR 2//define the extruder nbr that the actual extruder is connected to 
