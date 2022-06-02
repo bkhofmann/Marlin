@@ -22,7 +22,7 @@ steps_per_mm_correction_factor = MSU_EXTRUDER_STEPS_PER_MM/static_cast<float>(pl
 void MSUMP::tool_change(uint8_t index)
 {
   #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
-    move_extruder(-MSU_GEAR_LENGTH,MSU_SPEED);
+    move_extruder(-MSU_GEAR_LENGTH,MSU_SPEED,true);
   #endif
 
   #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
@@ -36,9 +36,9 @@ void MSUMP::tool_change(uint8_t index)
   move_extruder(MSU_BOWDEN_TUBE_LENGTH*steps_per_mm_correction_factor,MSU_SPEED);
 
   #if ENABLED(MSU_DIRECT_DRIVE_SETUP)
-    move_extruder(4,MSU_SPEED);
+    move_extruder(4,MSU_SPEED,true);
     idler_select_filament_nbr(-1);
-    move_extruder(MSU_GEAR_LENGTH,MSU_SPEED);
+    move_extruder(MSU_GEAR_LENGTH,MSU_SPEED,true);
   #endif
 
   #if ENABLED(MSU_DIRECT_DRIVE_LINKED_EXTRUDER_SETUP)
